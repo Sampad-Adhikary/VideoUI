@@ -14,24 +14,35 @@
         cursor: move !important;
       }
     </style>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
   </head>
   <body>
-    <iframe
-      src="https://sampad-adhikary.github.io/assembler-simulator/"
-      frameborder="0"
-      width="900"
-      height="720"
-    ></iframe>
-    <div class="video-floatable" id="floatable-div">
-      <iframe
-        id="floatable-iframe"
-        src=""
-        title="Video player"
-        frameborder="0"
-        allow="autoplay; encrypted-media"
-        allowfullscreen
-      ></iframe>
+    <div class="row">
+      <div class="col-8">
+        <iframe
+          src="https://sampad-adhikary.github.io/assembler-simulator/"
+          frameborder="0"
+          width="900"
+          height="720"
+        ></iframe>
+      </div>
+
+      <div class="col-4">
+        <div class="video-floatable" id="floatable-div">
+          <iframe
+            id="floatable-iframe"
+            src=""
+            title="Video player"
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
     </div>
+
     <script>
       const floatableDiv = document.getElementById("floatable-div");
       const resizeDiv = document.getElementById("resize-div");
