@@ -1,62 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Video Lab</title>
     <style>
-        #floatable-div {
-            position: absolute;
-            padding: 20px;
-            resize: both;
-            overflow: hidden;
-            background-color: rgba(220, 40, 40, 0.8);
-            cursor: e-resize;
-        }
+      #floatable-div {
+        position: absolute;
+        padding: 10px;
+        resize: both;
+        overflow: none;
+        background-color: rgba(30, 14, 14, 0.247);
+        cursor: move !important;
+      }
     </style>
-</head>
-<body>
-    <iframe src="https://sampad-adhikary.github.io/assembler-simulator/" frameborder="0" width="900" height="720"></iframe>
+  </head>
+  <body>
+    <iframe
+      src="https://sampad-adhikary.github.io/assembler-simulator/"
+      frameborder="0"
+      width="900"
+      height="720"
+    ></iframe>
     <div class="video-floatable" id="floatable-div">
-        <iframe id="floatable-iframe" src="" title="Video player" frameborder="10" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      <iframe
+        id="floatable-iframe"
+        src=""
+        title="Video player"
+        frameborder="0"
+        allow="autoplay; encrypted-media"
+        allowfullscreen
+      ></iframe>
     </div>
     <script>
-        const floatableDiv = document.getElementById('floatable-div');
-        const floatableIframe = document.getElementById('floatable-iframe');
+      const floatableDiv = document.getElementById("floatable-div");
+      const resizeDiv = document.getElementById("resize-div");
+      const floatableIframe = document.getElementById("floatable-iframe");
 
-        let isDragging = false;
-        let startX;
-        let startY;
+      let isDragging = false;
+      let startX;
+      let startY;
 
-        floatableDiv.addEventListener('mousedown', (e) => {
+      floatableDiv.addEventListener("mousedown", (e) => {
+        if (e.target === floatableDiv) {
+          const rect = floatableDiv.getBoundingClientRect();
+          const offsetX = e.clientX - rect.left;
+          const offsetY = e.clientY - rect.top;
+
+          if (offsetX > rect.width - 10 && offsetY > rect.height - 10) {
+            // Clicking the bottom-right corner for resizing
+            isResizing = true;
+            startWidth = rect.width;
+            startHeight = rect.height;
+            startX = e.clientX;
+            startY = e.clientY;
+          } else {
+            // Clicking inside the div for dragging
             isDragging = true;
-            startX = e.clientX - floatableDiv.getBoundingClientRect().left;
-            startY = e.clientY - floatableDiv.getBoundingClientRect().top;
-        });
+            startX = e.clientX - rect.left;
+            startY = e.clientY - rect.top;
+          }
+        }
+      });
 
-        document.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
+      document.addEventListener("mousemove", (e) => {
+        if (isDragging) {
+          const newX = e.clientX - startX;
+          const newY = e.clientY - startY;
 
-            const newX = e.clientX - startX;
-            const newY = e.clientY - startY;
+          floatableDiv.style.left = `${newX}px`;
+          floatableDiv.style.top = `${newY}px`;
+        }
 
-            floatableDiv.style.left = `${newX}px`;
-            floatableDiv.style.top = `${newY}px`;
-        });
+        if (isResizing) {
+          const newWidth = startWidth + (e.clientX - startX);
+          const newHeight = startHeight + (e.clientY - startY);
 
-        document.addEventListener('mouseup', () => {
-            isDragging = false;
-        });
+          floatableDiv.style.width = `${newWidth}px`;
+          floatableDiv.style.height = `${newHeight}px`;
+          floatableIframe.width = newWidth - 20;
+          floatableIframe.height = newHeight - 20;
+        }
+      });
 
-        floatableIframe.addEventListener('load', () => {
-            // Set the iframe size to match the div's size
-            floatableIframe.width = floatableDiv.clientWidth;
-            floatableIframe.height = floatableDiv.clientHeight;
-        });
+      document.addEventListener("mouseup", () => {
+        isDragging = false;
+        isResizing = false;
+      });
 
-        // Set the video URL for the iframe
-        const videoURL = 'https://www.youtube.com/embed/LXb3EKWsInQ?si=nBpWxxHm6fKRZpRq'; // Replace with your video URL
-        floatableIframe.src = videoURL;
+      document.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+
+        const newX = e.clientX - startX;
+        const newY = e.clientY - startY;
+
+        floatableDiv.style.left = `${newX}px`;
+        floatableDiv.style.top = `${newY}px`;
+      });
+
+      document.addEventListener("mouseup", () => {
+        isDragging = false;
+      });
+
+      floatableIframe.addEventListener("load", () => {
+        // Set the iframe size to match the div's size
+        floatableIframe.width = floatableDiv.clientWidth;
+        // floatableIframe.height = floatableDiv.clientHeight;
+      });
+
+      // Set the video URL for the iframe
+      const videoURL =
+        "https://www.youtube.com/embed/LXb3EKWsInQ?si=nBpWxxHm6fKRZpRq"; // Replace with your video URL
+      floatableIframe.src = videoURL;
     </script>
-</body>
+  </body>
 </html>
