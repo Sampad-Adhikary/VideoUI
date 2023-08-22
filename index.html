@@ -11,7 +11,7 @@
         resize: both;
         overflow: none;
         background-color: rgba(30, 14, 14, 0.247);
-        cursor: move !important;
+        cursor: move;
       }
     </style>
 
@@ -65,11 +65,13 @@
             startHeight = rect.height;
             startX = e.clientX;
             startY = e.clientY;
+            floatableDiv.style.cursor = "se-resize";
           } else {
             // Clicking inside the div for dragging
             isDragging = true;
             startX = e.clientX - rect.left;
             startY = e.clientY - rect.top;
+            floatableDiv.style.cursor = "move";
           }
         }
       });
