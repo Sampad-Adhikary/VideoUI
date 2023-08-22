@@ -5,21 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Lab</title>
     <style>
-        .video-floatable {
+        #floatable-div {
             position: absolute;
-            width: 660px;
-            height: 415px;
+            padding: 20px;
             resize: both;
             overflow: hidden;
-            background-color: rgba(255, 255, 255, 0.8);
-            cursor: move;
+            background-color: rgba(220, 40, 40, 0.8);
+            cursor: e-resize;
         }
     </style>
 </head>
 <body>
     <iframe src="https://sampad-adhikary.github.io/assembler-simulator/" frameborder="0" width="900" height="720"></iframe>
     <div class="video-floatable" id="floatable-div">
-        <iframe id="floatable-iframe" src="" title="Video player" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <iframe id="floatable-iframe" src="" title="Video player" frameborder="10" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
     <script>
         const floatableDiv = document.getElementById('floatable-div');
