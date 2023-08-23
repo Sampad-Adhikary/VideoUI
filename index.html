@@ -7,11 +7,40 @@
     <style>
       #floatable-div {
         position: absolute;
-        padding: 10px;
+        padding: 15px;
         resize: both;
         overflow: none;
         background-color: rgba(30, 14, 14, 0.247);
         cursor: move;
+      }
+      #tutorial-div {
+        position: absolute;
+        padding: 15px;
+        bottom: 0;
+        right: 0;
+        background-color: rgb(30, 14, 14);
+        cursor:pointer;
+        color: white;
+        display: none;
+      }
+      #tutorial-div p{
+        cursor: pointer;
+      }
+      #minimize-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        cursor: pointer;
+        margin-right: 5px;
+        /* Add any additional styling you need for the minimize button */
+      }
+      #resize-img {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        margin-bottom: 3px;
+        margin-right: 3px;
+        /* Add any additional styling you need for the minimize button */
       }
     </style>
 
@@ -40,6 +69,7 @@
 
       <div class="col-4">
         <div class="video-floatable" id="floatable-div">
+          <img id="minimize-btn" src="minimize-sign.png" width="15px">
           <iframe
             id="floatable-iframe"
             src=""
@@ -48,6 +78,10 @@
             allow="autoplay; encrypted-media"
             allowfullscreen
           ></iframe>
+          <img id="resize-img" src="resize.png" alt="resize" width="10px">
+        </div>
+        <div id="tutorial-div">
+          <p>tutorial</p>
         </div>
       </div>
     </div>
@@ -56,10 +90,34 @@
       const floatableDiv = document.getElementById("floatable-div");
       const resizeDiv = document.getElementById("resize-div");
       const floatableIframe = document.getElementById("floatable-iframe");
+      const minimizeBtn = document.getElementById("minimize-btn");
+      const tutorialDiv = document.getElementById("tutorial-div");
 
+      let isResizing = false;
       let isDragging = false;
       let startX;
       let startY;
+
+      tutorialDiv.addEventListener('click',(e)=>{
+        floatableDiv.style.display = "block";
+        tutorialDiv.style.display = "none";
+      })
+
+      minimizeBtn.addEventListener('click',(e)=>{
+        floatableDiv.style.display = "none";
+        tutorialDiv.style.display = "block";
+      })
+
+      floatableDiv.addEventListener("mouseover",(e)=>{
+        const rect = floatableDiv.getBoundingClientRect();
+        const offsetX = e.clientX - rect.left;
+        const offsetY = e.clientY - rect.top;     
+        if (offsetX > rect.width - 20 && offsetY > rect.height - 20) {
+          floatableDiv.style.cursor = "se-resize";
+        } else {
+          floatableDiv.style.cursor = "move";
+        }
+      });
 
       floatableDiv.addEventListener("mousedown", (e) => {
         if (e.target === floatableDiv) {
@@ -67,7 +125,7 @@
           const offsetX = e.clientX - rect.left;
           const offsetY = e.clientY - rect.top;
 
-          if (offsetX > rect.width - 10 && offsetY > rect.height - 10) {
+          if (offsetX > rect.width - 15 && offsetY > rect.height - 15) {
             // Clicking the bottom-right corner for resizing
             isResizing = true;
             startWidth = rect.width;
@@ -100,8 +158,8 @@
 
           floatableDiv.style.width = `${newWidth}px`;
           floatableDiv.style.height = `${newHeight}px`;
-          floatableIframe.width = newWidth;
-          floatableIframe.height = newHeight;
+          floatableIframe.width = newWidth-30;
+          floatableIframe.height = newHeight-30;
         }
       });
 
@@ -128,7 +186,7 @@
       floatableIframe.addEventListener("load", () => {
         // Set the iframe size to match the div's size
         floatableIframe.width = floatableDiv.clientWidth;
-        // floatableIframe.height = floatableDiv.clientHeight;
+        floatableIframe.height = floatableDiv.clientHeight;
       });
 
       // Set the video URL for the iframe
